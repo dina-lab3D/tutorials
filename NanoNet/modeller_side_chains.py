@@ -5,9 +5,9 @@ import sys
 def make_alignment_file(pdb_name, sequence):
 
     with open("pdb_seq.ali", "w") as ali_file:
-        ali_file.write(f">P1;pdb_seq\n")
-        ali_file.write(f"sequence:pdb_seq:::::::0.00: 0.00\n")
-        ali_file.write(f"{sequence}*")
+        ali_file.write(">P1;pdb_seq\n")
+        ali_file.write("sequence:pdb_seq:::::::0.00: 0.00\n")
+        ali_file.write(sequence + "*")
 
     pdb_file = pdb_name
     env = environ()
@@ -43,5 +43,4 @@ def relax_pdb(pdb_name, sequence):
 
 
 
-relax_pdb(pdb_name='6zrv_network.pdb', sequence='QVQLVESGGGLVQPGGSLRLSCAASGFSLDNYAIGWFRQAPGKEREGVSCISSSDGSTYYTDSVEGRFTISRDNAKNTVYLQMNSLKPDDTAVYYCAADYGSSWCTFNGMDYWGQGTQVTVSS')
-print(f"Modeller finished, Relaxed model with side chains is located in: 6zrv_side_chains.pdb")
+relax_pdb(pdb_name=sys.argv[1], sequence=sys.argv[2])
