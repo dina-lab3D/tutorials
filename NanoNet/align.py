@@ -26,12 +26,6 @@ import sys
 ref_pdb = sys.argv[1]
 model_pdb = sys.argv[2]
 
-# Select what residues numbers you wish to align
-# and put them in a list
-start_id = 1
-end_id   = 70
-atoms_to_be_aligned = range(start_id, end_id + 1)
-
 # Start the parser
 pdb_parser = Bio.PDB.PDBParser(QUIET = True)
 
@@ -54,15 +48,12 @@ for ref_chain in ref_model:
   # Iterate of all residues in each model in order to find proper atoms
   for ref_res in ref_chain:
     # Check if residue number ( .get_id() ) is in the list
-    if ref_res.get_id()[1] in atoms_to_be_aligned:
-      # Append CA atom to list
-      ref_atoms.append(ref_res['CA'])
+    ref_atoms.append(ref_res['CA'])
 
 # Do the same for the sample structure
 for sample_chain in sample_model:
   for sample_res in sample_chain:
-    if sample_res.get_id()[1] in atoms_to_be_aligned:
-      sample_atoms.append(sample_res['CA'])
+    sample_atoms.append(sample_res['CA'])
 
 # Now we initiate the superimposer:
 super_imposer = Bio.PDB.Superimposer()
