@@ -15,7 +15,7 @@ def make_alignment_file(pdb_name, sequence):
     aln = alignment(env)
     mdl = model(env, file=pdb_file)
     aln.append_model(mdl, align_codes=pdb_file, atom_files=pdb_file)
-    aln.append(file=f"pdb_seq.ali", align_codes="pdb_seq")
+    aln.append(file="pdb_seq.ali", align_codes="pdb_seq")
     aln.align2d()
     aln.write(file="alignment_for_full_atoms.ali", alignment_format='PIR')
 
