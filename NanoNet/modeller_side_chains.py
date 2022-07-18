@@ -4,11 +4,12 @@ import sys
 
 def make_alignment_file(pdb_name, sequence):
 
-    with open("pdb_seq.ali", "w") as ali_file:
-        ali_file.write(">P1;pdb_seq\n")
-        ali_file.write("sequence:pdb_seq:::::::0.00: 0.00\n")
-        ali_file.write(sequence + "*")
-
+    ali_file = open("pdb_seq.ali", "w") 
+    ali_file.write(">P1;pdb_seq\n")
+    ali_file.write("sequence:pdb_seq:::::::0.00: 0.00\n")
+    ali_file.write(sequence + "*")
+    ali_file.close()
+    
     pdb_file = pdb_name
     env = environ()
     aln = alignment(env)
