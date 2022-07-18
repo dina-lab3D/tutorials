@@ -43,5 +43,5 @@ def relax_pdb(pdb_name, sequence):
 
 
 
-relax_pdb(pdb_name=sys.argv[1], sequence=sys.argv[2])
-print(f"Modeller finished, Relaxed model with side chains is located in: {sys.argv[1].split('.')[0]}_side_chains.pdb")
+relax_pdb(pdb_name='6zrv_network.pdb', sequence='QVQLVESGGGLVQPGGSLRLSCAASGFSLDNYAIGWFRQAPGKEREGVSCISSSDGSTYYTDSVEGRFTISRDNAKNTVYLQMNSLKPDDTAVYYCAADYGSSWCTFNGMDYWGQGTQVTVSS)
+print(f"Modeller finished, Relaxed model with side chains is located in: 6zrv_side_chains.pdb")
