@@ -70,7 +70,7 @@ super_imposer.set_atoms(ref_atoms, sample_atoms)
 super_imposer.apply(sample_model.get_atoms())
 
 # Print RMSD:
-print super_imposer.rms
+print(super_imposer.rms)
 
 # Save the aligned version of 1UBQ.pdb
 io = Bio.PDB.PDBIO()
