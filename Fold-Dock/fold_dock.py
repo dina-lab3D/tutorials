@@ -32,7 +32,7 @@ def add_antigen_lines(ag_seq, ag_pred, ag_model, out_file):
     os.remove("temp2.pdb")
 
 
-def make_pdb_files(out_file_name, ab_h_seq, ab_l_seq, ab_pred, ag_seq=None, ag_model=None, ag_pred=None, run_modeller=False):
+def make_pdb_files(out_file_name, ab_h_seq, ab_l_seq, ab_pred, ag_seq=None, ag_model=None, ag_pred=None, run_modeller=False, fast_modeller=False):
     """
     """
     has_antigen = ag_seq is not None and ag_model is not None
@@ -49,13 +49,13 @@ def make_pdb_files(out_file_name, ab_h_seq, ab_l_seq, ab_pred, ag_seq=None, ag_m
         verbose_print("Relaxing PDB file {} using MODELLER".format(out_file_name))
         old_stdout = sys.stdout  # backup current stdout
         sys.stdout = open(os.devnull, "w")
-        relax_pdb(out_file_name)
+        relax_pdb(out_file_name, fast_modeller)
         sys.stdout = old_stdout  # reset old stdou
         verbose_print("Created relaxed PDB file")
 
 
 def dock_and_fold(ab_sequence, ag_model, ag_seq, ag_input, dock, ab_score,
-                  nb_score, topn, run_modeller):
+                  nb_score, topn, run_modeller, fast_modeller):
     """
     runs Fold&Dock structure predictions
     """
@@ -88,11 +88,11 @@ def dock_and_fold(ab_sequence, ag_model, ag_seq, ag_input, dock, ab_score,
         verbose_print("Creating PDB files for the top {} models".format(min(topn, len(ranks))))
         for rank, pred_model in enumerate(ranks[:topn]):
             model_file_path = "{}_rank_{}_unrelaxed.pdb".format(ab_sequence.id, rank + 1)
-            make_pdb_files(model_file_path, heavy_seq, light_seq, pred_ab[pred_model], ag_seq=ag_seq, ag_model=ag_model, ag_pred=pred_ag[pred_model], run_modeller=run_modeller)
+            make_pdb_files(model_file_path, heavy_seq, light_seq, pred_ab[pred_model], ag_seq=ag_seq, ag_model=ag_model, ag_pred=pred_ag[pred_model], run_modeller=run_modeller, fast_modeller=fast_modeller)
 
 
 def dock_and_fold_batch(ab_fasta, ag_pdb, antigen_chains, dock, ab_score,
-                        nb_score, topn, run_modeller, out_dir):
+                        nb_score, topn, run_modeller, fast_modeller, out_dir):
     """
     runs Fold&Dock structure predictions for a batch of antibody sequences
     """
@@ -126,7 +126,7 @@ def dock_and_fold_batch(ab_fasta, ag_pdb, antigen_chains, dock, ab_score,
 
         start_ = timer()
         verbose_print("Working on sequence {}/{}".format(i+1, len(sequences)))
-        dock_and_fold(sequence, ag_model, ag_seq, ag_input, dock, ab_score, nb_score, topn, run_modeller)
+        dock_and_fold(sequence, ag_model, ag_seq, ag_input, dock, ab_score, nb_score, topn, run_modeller, fast_modeller)
         end_ = timer()
         verbose_print("Finished working on sequence {}/{} with id {}, running time: {}".format(i+1, len(sequences), sequence.id, end_-start_))
         os.chdir("..")
@@ -172,6 +172,9 @@ def parse_arguments():
     parser.add_argument("-m", "--modeller",
                         help="Side chains reconstruction using modeller, (default: False)",
                         action="store_true")
+    parser.add_argument("-f", "--fast_modeller",
+                        help="Fast side chains reconstruction using modeller (relevent only if modeller=True), (default: False)",
+                        action="store_true")
     parser.add_argument("-t", "--topn",
                         help="Number of models to generate for each antibody sequence (0-len(antigen)), (default: 5)",
                         default=5,
@@ -205,7 +208,7 @@ if __name__ == '__main__':
 
     start = timer()
     dock_and_fold_batch(args.ab_fasta, input_ag_pdb, args.antigen_chains, dock_model, ab_score_model,
-                        nb_score_model, args.topn, args.modeller, output_directory)
+                        nb_score_model, args.topn, args.modeller, args.fast_modeller, output_directory)
     end = timer()
 
     verbose_print("Fold&Dock ended successfully, models are located in directory:'{}', total time : {}.".format(output_directory, end - start))

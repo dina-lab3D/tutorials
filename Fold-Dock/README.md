@@ -1,6 +1,6 @@
 # Fold&Dock
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dina-lab3D/Fold-Dock/blob/main/Fold_Dock.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/dina-lab3D/tutorials/blob/main/Fold-Dock/Fold_Dock.ipynb)
 
 <p align="center"><img src="https://github.com/dina-lab3D/Fold-Dock/blob/main/Images/FoldDock_architecture.png" width="900" /></p>
 
