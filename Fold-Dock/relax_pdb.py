@@ -34,7 +34,7 @@ def make_alignment_file(pdb_model, pdb, pdb_name):
     aln.write(file="alignment_for_modeller.ali", alignment_format='PIR')
 
 
-def relax_pdb(pdb):
+def relax_pdb(pdb, fast=False):
     """
     reconstruct side chains using modeller
     """
@@ -53,6 +53,8 @@ def relax_pdb(pdb):
     env.io.atom_files_directory = ['.', '../atom_files']
 
     a = my_automodel([chain.get_id() for chain in pdb_model])(env, alnfile='alignment_for_modeller.ali', knowns=pdb, sequence=pdb_name)
+    if fast:
+        a.md_level = refine.fast
     a.starting_model = 1
     a.ending_model = 1
     a.make()
