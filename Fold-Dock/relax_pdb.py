@@ -54,7 +54,7 @@ def relax_pdb(pdb, fast=False):
 
     a = my_automodel([chain.get_id() for chain in pdb_model])(env, alnfile='alignment_for_modeller.ali', knowns=pdb, sequence=pdb_name)
     if fast:
-        a.md_level = refine.fast
+        a.md_level = refine.very_fast
     a.starting_model = 1
     a.ending_model = 1
     a.make()
